@@ -1,0 +1,85 @@
+"Valida los tipos de nivel"
+enum Level {
+  Principiante
+  Intermedio 
+  Avanzado
+}
+union GlobalSearch = Course | Student | Monitor
+type Course {
+  _id: ID!
+  title: String!
+  teacher: String
+  description: String!
+  topic: String
+  people: [Student]
+  level: Level
+}
+interface Person {
+  _id: ID!
+  name: String!
+  email: String!
+}
+type Student implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  avatar: String
+}
+type Monitor implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  phone: String
+}
+type Query {
+  "devuelve un listado de cursos"
+  getCourses: [Course]
+  "Devuelve un curso"
+  getCourse(id: ID!): Course
+  "devuelve un listado de Personas"
+  getPeople: [Person]
+  "Devuelve un estudiantes"
+  getPerson(id: ID!): Person
+  "Ejecuta una busqueda global"
+  searchItems(keyword: String!) : [GlobalSearch]
+}
+input courseInput{
+  title: String!
+  teacher: String
+  description: String!
+  topic: String
+}
+input courseEditInput{
+  title: String
+  teacher: String
+  description: String
+  topic: String
+}
+input PersonInput{
+  name: String!
+  email: String!
+  phone: String
+  avatar: String
+}
+input PersonEditInput{
+  name: String
+  email: String
+  phone: String
+  avatar: String
+}
+type Mutation {
+  "Crear un curso"
+  createCourse(input: courseInput!): Course
+  "Edita un curso"
+  editCourse(_id:ID!, input: courseEditInput): Course
+  "Elimina un curso"
+  deleteCourse(id: ID!): String
+  "Crear una Persona"
+  createPerson(input: PersonInput!): Person
+  "Edita una Persona"
+  editPerson(_id:ID!, input: PersonEditInput): Person
+  "Elimina una Persona"
+  deletePerson(id: ID!): String
+  "Agregar persona a un curso"
+  addPeople(courseID:ID!, personID:ID!): Course
+}
